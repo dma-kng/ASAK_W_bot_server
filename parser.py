@@ -13,11 +13,11 @@ def parse_all_products(html: str) -> list:
     for card in cards:
         price = card.select_one('ins.price__lower-price')
         price = (
-            re.sub(r"\D", "", price.get_text()) if price else None
+            re.sub(r'\D', '', price.get_text()) if price else None
         )
         old_price = card.select_one('del')
         old_price = (
-            re.sub(r"\D", "", old_price.get_text()) if old_price else None
+            re.sub(r'\D', '', old_price.get_text()) if old_price else None
         )
         discount = card.select_one('span.percentage-sale')
         discount = discount.get_text(strip=True) if discount else None
@@ -31,7 +31,7 @@ def parse_all_products(html: str) -> list:
         )
         reviews = card.select_one('span.product-card__count')
         reviews = (
-            int(re.sub(r"\D", "", reviews.get_text(strip=True))) if reviews else None
+            int(re.sub(r'\D', '', reviews.get_text(strip=True))) if reviews else None
         )
         products.append({
             'brand': brand,
@@ -112,36 +112,41 @@ def analyze_price_categories(products: list):
 
 def print_overall_report(stats: dict, query: str):
     print(f'\nОбщая аналитика по запросу: «{query}»')
-    print(f'Найдено товаров: {stats['num_products']}')
+    print(f'Найдено товаров: {stats["num_products"]}')
     if stats["avg_price"] is not None:
-        print(f'Средняя цена: {stats['avg_price']} руб')
-        print(f'Медианная цена: {stats['median_price']} руб')
-        print(f'Минимальная цена: {stats['min_price']} руб')
-        print(f'Максимальная цена: {stats['max_price']} руб')
+        print(f'Средняя цена: {stats["avg_price"]} руб')
+        print(f'Медианная цена: {stats["median_price"]} руб')
+        print(f'Минимальная цена: {stats["min_price"]} руб')
+        print(f'Максимальная цена: {stats["max_price"]} руб')
     else:
         print('Данных о ценах недостаточно.')
-    print(f'Средний рейтинг: {stats['avg_rating']}' if stats['avg_rating'] is not None else 'Данных о рейтингах нет.')
-    print(f'Медианный рейтинг: {stats['median_rating']}' if stats['median_rating'] is not None else '')
-    print(f'Среднее число отзывов: {stats['avg_reviews']}' if stats['avg_reviews'] is not None else 'Данных об отзывах нет.')
-    print(f'Медианное число отзывов: {stats['median_reviews']}' if stats['median_reviews'] is not None else '')
-    print(f'Бренды на странице: {', '.join(stats['brands']) if stats['brands'] else 'Бренды не найдены'}')
+    print(f'Средний рейтинг: {stats["avg_rating"]}' if stats["avg_rating"] is not None else 'Данных о рейтингах нет.')
+    print(f'Медианный рейтинг: {stats["median_rating"]}' if stats["median_rating"] is not None else '')
+    print(f'Среднее число отзывов: {stats["avg_reviews"]}' if stats["avg_reviews"] is not None else 'Данных об отзывах нет.')
+    print(f'Медианное число отзывов: {stats["median_reviews"]}' if stats["median_reviews"] is not None else '')
+    if stats['brands']:
+        brands_str = ', '.join(sorted(stats['brands']))
+    else:
+        brands_str = 'Бренды не найдены'
+    print(f'Бренды на странице: {brands_str}')
+
 
 def print_price_categories(analysis):
     print('\nСтатистика по ценовым категориям:')
     for cat, data in analysis.items():
-        print(f'\nКатегория: {cat} ({data['count']} товаров)')
-        print(f'Ценовой диапазон: {data['price_min']} — {data['price_max']} руб')
-        print(f'Среднее число отзывов: {data['avg_reviews']}')
-        print(f'Медианное число отзывов: {data['median_reviews']}')
-        print(f'Средний рейтинг: {data['avg_rating']}')
-        print(f'Медианный рейтинг: {data['median_rating']}')
+        print(f'\nКатегория: {cat} ({data["count"]} товаров)')
+        print(f'Ценовой диапазон: {data["price_min"]} — {data["price_max"]} руб')
+        print(f'Среднее число отзывов: {data["avg_reviews"]}')
+        print(f'Медианное число отзывов: {data["median_reviews"]}')
+        print(f'Средний рейтинг: {data["avg_rating"]}')
+        print(f'Медианный рейтинг: {data["median_rating"]}')
         pop = data['most_popular']
         if pop:
             print('Самый популярный товар в категории:')
-            print(f' Название: {pop['name']}')
-            print(f' Цена: {pop['price']} руб')
-            print(f' Отзывов: {pop['reviews']}')
-            print(f' Средняя оценка: {pop['rating']}')
+            print(f' Название: {pop["name"]}')
+            print(f' Цена: {pop["price"]} руб')
+            print(f' Отзывов: {pop["reviews"]}')
+            print(f' Средняя оценка: {pop["rating"]}')
         else:
             print('В категории нет данных для определения популярного товара.')
 
