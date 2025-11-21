@@ -12,6 +12,7 @@ API_URL = f'https://api.telegram.org/bot{TOKEN}/'
 user_states = {}
 
 def send_message(chat_id, text):
+    print("DEBUG: send_message called", flush=True)
     url = API_URL + 'sendMessage'
     requests.post(url, json={
         'chat_id': chat_id,
@@ -100,6 +101,7 @@ def webhook():
         return 'ok'
 
     return 'ok'
+
 
 
 
