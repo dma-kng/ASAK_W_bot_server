@@ -15,7 +15,7 @@ def send_message(chat_id, text):
     url = API_URL + 'sendMessage'
     requests.post(url, json={
         'chat_id': chat_id,
-        'text': text
+        'text': text,
         'parse_mode': 'HTML'
     })
 
@@ -100,6 +100,7 @@ def webhook():
         return 'ok'
 
     return 'ok'
+
 
 
 
