@@ -13,7 +13,12 @@ user_states = {}
 
 def send_message(chat_id, text):
     url = API_URL + 'sendMessage'
-    requests.post(url, json={'chat_id': chat_id, 'text': text})
+    requests.post(url, json={
+        'chat_id': chat_id,
+        'text': text
+        'parse_mode': 'HTML'
+    })
+
 
 def download_file(file_id, save_path):
     get_file_url = API_URL + f'getFile?file_id={file_id}'
@@ -34,7 +39,7 @@ def webhook():
     user_id = chat_id
 
     if 'text' in message and message['text'] == '/start':
-        send_message(chat_id, 'Привет! Пришли мне HTML-файл страницы WB и, следом, название категории.')
+        send_message(chat_id, 'Привет! Я могу сделать для тебя аналитику по любой категории товаров на Wildberries, просто пришли мне <b>HTML-файл</b> страницы поиска на WB по интересующей категории. (<i>Онлайн запросы через бот, к сожалению, пока не доступны из-за ограничений WB</i>)')
         return 'ok'
 
     if 'document' in message:
@@ -95,6 +100,7 @@ def webhook():
         return 'ok'
 
     return 'ok'
+
 
 
 
