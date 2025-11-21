@@ -39,7 +39,7 @@ def webhook():
     user_id = chat_id
 
     if 'text' in message and message['text'] == '/start':
-        send_message(chat_id, 'FFFFFFПривет! Я могу сделать для тебя аналитику по любой категории товаров на Wildberries, просто пришли мне HTML-файл страницы поиска на WB по интересующей категории. (Онлайн запросы через бот, к сожалению, пока не доступны из-за ограничений WB)')
+        send_message(chat_id, 'Привет! Я могу сделать для тебя аналитику по любой категории товаров на Wildberries, просто пришли мне <b>HTML-файл</b> страницы поиска на WB по интересующей категории. (<i>Онлайн запросы через бот, к сожалению, пока не доступны из-за ограничений WB</i>)')
         return 'ok'
 
     if 'document' in message:
@@ -48,7 +48,7 @@ def webhook():
         save_path = f'temp_{user_id}_{file_name}'
         download_file(file_id, save_path)
         user_states[user_id] = {'file_path': save_path}
-        send_message(chat_id, 'Файл сохранён! Теперь пришли название категории или товара.')
+        send_message(chat_id, 'Файл сохранён! Теперь пришли название категории или товара. (<i>так же, как писали в поиске на  сайте</i>)')
         return 'ok'
 
     if 'text' in message and user_id in user_states and 'file_path' in user_states[user_id]:
@@ -61,7 +61,7 @@ def webhook():
             overall_stats = analyze_overall_stats(products)
             cats = analyze_price_categories(products)
             report = (
-                f"\nОбщая аналитика по запросу: '{query}'\n"
+                f"\n<b>Общая аналитика по запросу:</b> '{query}'\n"
                 f"Найдено товаров: {overall_stats['num_products']}\n"
                 f"Средняя цена: {overall_stats['avg_price']} руб\n"
                 f"Медианная цена: {overall_stats['median_price']} руб\n"
@@ -69,11 +69,11 @@ def webhook():
                 f"Максимальная цена: {overall_stats['max_price']} руб\n"
                 f"Средний рейтинг: {overall_stats['avg_rating']}\n"
                 f"Среднее число отзывов: {overall_stats['avg_reviews']}\n"
-                '\n\nСтатистика по ценовым категориям:'
+                '\n\n<b>Статистика по ценовым категориям:</b>'
             )
             for cat, data in cats.items():
                 report += (
-                    f"\n\nКатегория: {cat} ({data['count']} товаров)\n"
+                    f"\n\n<u>Категория:</u> {cat} ({data['count']} товаров)\n"
                     f"Ценовой диапазон: {data['price_min']} — {data['price_max']} руб\n"
                     f"Среднее число отзывов: {data['avg_reviews']}\n"
                     f"Медианное число отзывов: {data['median_reviews']}\n"
@@ -100,6 +100,7 @@ def webhook():
         return 'ok'
 
     return 'ok'
+
 
 
 
