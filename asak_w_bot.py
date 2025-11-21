@@ -16,7 +16,6 @@ def send_message(chat_id, text):
     requests.post(url, json={
         'chat_id': chat_id,
         'text': text
-        'parse_mode': 'HTML'
     })
 
 
@@ -39,7 +38,7 @@ def webhook():
     user_id = chat_id
 
     if 'text' in message and message['text'] == '/start':
-        send_message(chat_id, 'Привет! Я могу сделать для тебя аналитику по любой категории товаров на Wildberries, просто пришли мне <b>HTML-файл</b> страницы поиска на WB по интересующей категории. (<i>Онлайн запросы через бот, к сожалению, пока не доступны из-за ограничений WB</i>)')
+        send_message(chat_id, 'Привет! Я могу сделать для тебя аналитику по любой категории товаров на Wildberries, просто пришли мне HTML-файл страницы поиска на WB по интересующей категории. (Онлайн запросы через бот, к сожалению, пока не доступны из-за ограничений WB)')
         return 'ok'
 
     if 'document' in message:
@@ -100,6 +99,7 @@ def webhook():
         return 'ok'
 
     return 'ok'
+
 
 
 
